@@ -119,8 +119,11 @@ function getUsers(){
                                         <span className="status f-online" />
                                       </figure>
                                       <div className="friendz-meta">
-                                        <a href="time-line.html">{ele.name}</a>
-                                      </div>
+                                    <Link to={`/Friendprofile/${ele.friend_id} `}> 
+                                    {ele.name}
+                                  </Link>  
+                                  
+                                  </div>
                                     </li>
 
 )})}

@@ -3,7 +3,7 @@ import { MdDeleteForever } from 'react-icons/md';
 import { AiFillEdit } from 'react-icons/ai';
 import axios from 'axios';
 import { useState , useEffect , useParams } from 'react'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BsFillCreditCard2BackFill } from 'react-icons/bs';
 
 
@@ -272,7 +272,9 @@ const canclePostEdit = (id) => {
               <img  src={require(`../../image/${props.post.image}`)} alt="" />
             </figure>
             <div className="friend-name">
-              <ins>{props.post.name}</ins> 
+            <ins>  <Link to={`/Friendprofile/${props.post.user_id} `}> 
+                                    {props.post.name}
+                                  </Link> </ins> 
               <span>{props.post.created_at}</span> 
             </div>
                       

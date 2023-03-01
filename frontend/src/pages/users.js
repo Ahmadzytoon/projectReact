@@ -189,7 +189,9 @@ const Users = () => {
                                 <a href="time-line.html" title><img src={require(`../image/${ele.image}`)} alt="" /></a>
                               </figure>
                               <div className="pepl-info">
-                                <h4><a href="time-line.html" title>{ele.name}</a></h4>
+
+                            
+                                <h4><Link to={`/Friendprofile/${ele.id} `} title>{ele.name}</Link></h4>
                                 <h6><a href="time-line.html" title>  {ele.email}  </a></h6>
                                 {/* ____________________ */}
                                 {/* <a href="#" title className="add-butn" data-ripple>add friend</a> */}

@@ -67,7 +67,7 @@ const Sidebar = () => {
 
             <li>
               <i className="ti-power-off" />
-              <Link to="landing.html" title>
+              <Link to="/" title>
                 Logout
               </Link>
             </li>

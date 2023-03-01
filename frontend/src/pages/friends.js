@@ -139,7 +139,8 @@ const Friends = () => {
                             </div>
                           </li>
                         </ul>
-                      </div>{/* photos */}
+                      </div>
+                      {/* photos */}
                     </div>{/* centerl meta */}
                 
                     <Rightbar/>    {/* sidebar */}

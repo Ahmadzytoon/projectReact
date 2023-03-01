@@ -10,10 +10,16 @@ import { Link } from 'react-router-dom';
 import FeedProfile from '../components/profile/feedProfile';
 
 
-const Profile = () => {
+const RequestFriends = () => {
 
 
   const current_ID = JSON.parse(localStorage.getItem('id'));
+  const id = JSON.parse(localStorage.getItem('id'));
+  const ImageUser = localStorage.getItem('image');
+  const NameUser = localStorage.getItem('name');
+
+  const [requestFriends,setRequestFriends] = useState([]);  
+  const [requestFriend,setrequestFriend] = useState([]);
 
 
   const [dataUsers,setDataUsers] = useState([]);
@@ -22,8 +28,10 @@ const Profile = () => {
 
   
   useEffect(()=>{
-    getDataUsers();
+  
 
+    getDataUsers();
+      getFriendsRequest();
 
 },[]);
 
@@ -37,7 +45,41 @@ const Profile = () => {
     })
 }
 
+const getFriendsRequest = () => {
 
+  axios.get(`http://localhost:80/405found/backend/friendRequests.php/${id}`)
+  .then((respone)=>{
+      console.log(respone.data);
+      let requestFriend = respone.data.map((ele)=>{
+          return ele.user_id
+      })
+      console.log(requestFriend);
+      setrequestFriend(requestFriend);
+      setRequestFriends(respone.data)
+  })
+}
+
+  // status الموافقة على طلب الصداقة وتغيير ال 
+  const AcceptFriend = (friendId) => {
+    let inputs = {user_id:id , friend_id:friendId};
+    axios.put(`http://localhost:80/405found/backend/friends.php/edit`,inputs)
+    .then((respone)=>{
+        getFriendsRequest();
+    })
+  }
+
+      // الغاء  طلب الصداقة
+      const removeRequest = (friendId) => {
+        let inputs = {user_id:friendId , friend_id:id};
+        axios.put(`http://localhost:80/405found/backend/removeRequest.php/edit`,inputs)
+        .then((respone)=>{
+            console.log(respone.data);
+            getFriendsRequest();
+        })
+
+
+        
+    }
 
 
     return (
@@ -83,9 +125,9 @@ return <div  key={index}>
                                      <span>@{users.name}</span>
                                    </li>
                                    <li>
-                                     <Link className="active" to={"/profile"} title data-ripple>time line</Link>
+                                     <Link className="" to={"/profile"} title data-ripple>time line</Link>
                                      <Link className to={"/groups"} title data-ripple>Groups</Link>
-                                     <Link className="" to={"/requestFriends"}  title data-ripple>Request Friends</Link>
+                                     <Link className="active" to={"/requestFriends"}  title data-ripple>Request Friends</Link>
                                    </li>
                                  </ul>
                                </div>
@@ -101,7 +143,46 @@ return <div  key={index}>
                            <div className="col-lg-12">
                              <div className="row" id="page-contents">
                              <Sidebar/>
-                          <FeedProfile user_id={current_ID}/>
+                             <div className="col-lg-6">
+                               {/* ____________________________________start_____________________________________________ */}
+                             <div className="central-meta">
+                        <div className="groups">
+                          <span><i className="fa fa-users" />Request Friends</span>
+                        </div>
+
+
+                        <ul className="nearby-contct">
+
+{requestFriends.map((ele,index)=>{
+return(
+
+                          <li>
+                            <div className="nearly-pepls">
+                              <figure>
+                                <a href="time-line.html" title><img src={require(`../image/${ele.image}`)}alt="" /></a>
+                              </figure>
+                              <div className="pepl-info">
+                                <h4>  <Link to={`/Friendprofile/${ele.user_id} `}> 
+                                    {ele.name}
+                                  </Link>  </h4>
+                              
+                                <button  title className="add-butn" data-ripple onClick={()=>AcceptFriend(ele.user_id)}>Confirm</button>
+                                
+                                <button title className="add-butn" data-ripple onClick={()=>removeRequest(ele.user_id)}>Delete</button>
+                              </div>
+                            </div>
+                          </li>
+                        )})}
+            
+                        </ul>
+
+
+                      </div>
+                             </div>	
+
+
+
+                             {/* _____________________________________end____________________________________________ */}
                                <Rightbar/>
                              </div>	
                            </div>
@@ -129,4 +210,4 @@ return <div  key={index}>
     )
                   }
 
-export default Profile;
+export default RequestFriends;
